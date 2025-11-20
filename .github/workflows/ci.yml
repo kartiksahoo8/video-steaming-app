@@ -32,7 +32,26 @@ jobs:
           node-version: '16'
       - run: npm install
       - run: npm test
-      
+
+    tag-on-merge:
+      name: Create Tag on Merge
+      if: github.event_name =='pull_request' && github.event.pull_request.merged == true
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - run: |
+           git config --global user.name 'github-actions'
+           git config --global user.email 'github-actions@github.com'
+           TAG="v$(date+'%Y.%m.%d.%H%M%S')"
+           git tag $TAG
+           git push orgin $TAG
+      deploy-dev:
+        name: Auto Deploy to DEV
+        nodes: [tests]
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v3
+          - run: echo "Deploying to DEV environment..."
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
