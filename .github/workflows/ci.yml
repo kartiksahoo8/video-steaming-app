@@ -32,7 +32,6 @@ jobs:
           node-version: '16'
       - run: npm install
       - run: npm test
-
     tag-on-merge:
       name: Create Tag on Merge
       if: github.event_name =='pull_request' && github.event.pull_request.merged == true
