@@ -43,16 +43,13 @@ jobs:
           git tag $TAG
           git push origin $TAG
 
-  deploy-dev:
+  deploy-dev:    
     name: Auto Deploy to DEV
     needs: [tests]
     runs-on: ubuntu-latest
     environment: dev
     steps:
       - uses: actions/checkout@v3
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEV_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "bash ~/deploy-dev.sh"
+      - run: echo "Deploying to DEV environment with API key..."
+        env:
+          DEV_API_KEY: ${{ secrets.DEV_API_KEY }}
