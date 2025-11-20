@@ -45,8 +45,19 @@ jobs:
 
   deploy-dev:
     name: Auto Deploy to DEV
-    nodes: [tests]
+    needs: [tests]
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v3
       - run: echo "Deploying to DEV environment..."
+
+  deploy-prod:
+    name: Auto Deploy to PROD
+    needs: [tests]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to PRODUCTION environment..."
