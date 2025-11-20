@@ -45,7 +45,7 @@ jobs:
 
   deploy-dev:
     name: Auto Deploy to DEV
-    needs: [tests]
+    nodes: [tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
